@@ -40,6 +40,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -129,10 +130,12 @@ public class Battery implements IMod, IGUI, IProxy {
         itemBlockGraphite = (new InformationalItemBlock(blockGraphite).setRegistryName(blockGraphite.getRegistryName()));
 
 
-//		if(Loader.isModLoaded("ComputerCraft")){
-//			IntegrationComputerCraft.computercraftInit();
-//		}
-//
+
+		if(Loader.isModLoaded("ComputerCraft") || Loader.isModLoaded("computercraft") || Loader.isModLoaded("CC: Tweaked")){
+            ZettaIndustries.logger.info("ComputerCraft integration for the big battery enabled");
+			IntegrationComputerCraft.computercraftInit();
+		}
+
         ZIRegistry.registerPacket(1, EnergyUpdatePacket.class, Side.CLIENT);
         ZIRegistry.registerPacket(2, PowerTapUpdatePacket.class, Side.SERVER);
         ZIRegistry.registerPacket(3, PowerTapUpdatePacket.class, Side.CLIENT);
@@ -314,14 +317,14 @@ public class Battery implements IMod, IGUI, IProxy {
         return electrolyteList;
     }
 
-    @Mod.EventHandler
-    @SideOnly(Side.CLIENT)
-    public void textureHook(TextureStitchEvent.Post event) {
-//        if (event.map.getTextureType() == 0)
-//        {
-//            acid.setIcons(acidFluid.getBlockTextureFromSide(1), acidFluid.getBlockTextureFromSide(2));
-//        }
-    }
+//    @Mod.EventHandler
+//    @SideOnly(Side.CLIENT)
+//    public void textureHook(TextureStitchEvent.Post event) {
+////        if (event.map.getTextureType() == 0)
+////        {
+////            acid.setIcons(acidFluid.getBlockTextureFromSide(1), acidFluid.getBlockTextureFromSide(2));
+////        }
+//    }
 
     @Override
     public void clientSide() {

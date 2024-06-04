@@ -1,20 +1,30 @@
 package com.bymarcin.zettaindustries.mods.battery.tileentity;
 
 import com.bymarcin.zettaindustries.mods.battery.erogenousbeef.core.multiblock.MultiblockValidationException;
+import dan200.computercraft.api.lua.ILuaContext;
+import dan200.computercraft.api.lua.LuaException;
+import dan200.computercraft.api.peripheral.IComputerAccess;
+import dan200.computercraft.api.peripheral.IPeripheral;
+import dan200.computercraft.api.peripheral.IPeripheralProvider;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.SimpleComponent;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 @Optional.InterfaceList({
         @Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "opencomputers"),
-        @Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = "ComputerCraft")
+        @Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheralProvider", modid = "computercraft")
 })
-public class TileEntityComputerPort extends BasicRectangularMultiblockTileEntityBase implements SimpleComponent /*, IPeripheralProvider*/ {
+public class TileEntityComputerPort extends BasicRectangularMultiblockTileEntityBase implements SimpleComponent, IPeripheralProvider {
 
     @Override
     public void isGoodForFrame() throws MultiblockValidationException {
@@ -187,170 +197,157 @@ public class TileEntityComputerPort extends BasicRectangularMultiblockTileEntity
     }
 
     // ComputerCraft
+    @Optional.Method(modid = "computercraft")
+    @Override
+    public IPeripheral getPeripheral(@Nonnull World world, @Nonnull BlockPos blockPos, @Nonnull EnumFacing enumFacing) {
+        System.out.println("TEST");
+        TileEntity te = world.getTileEntity(blockPos);
+        if(te instanceof TileEntityComputerPort)
+            return new BatteryPeripheral((TileEntityComputerPort) te);
+        else
+            return null;
+    }
 
-//	@Optional.Method(modid = "ComputerCraft")
-//	@Override
-//	public IPeripheral getPeripheral(World world, int x, int y, int z, int side) {
-//		TileEntity te = world.getTileEntity(x, y, z);
-//		if(te instanceof TileEntityComputerPort)
-//			return new BatteryPeripheral((TileEntityComputerPort) te);
-//		else
-//			return null;
-//	}
+	@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = "computercraft")
+	public static class BatteryPeripheral implements IPeripheral {
 
-//	@Optional.Interface(iface = "dan200.computercraft.api.peripheral.IPeripheral", modid = "ComputerCraft")
-//	public static class BatteryPeripheral implements IPeripheral {
-//
-//		TileEntityComputerPort te;
-//
-//		public BatteryPeripheral(TileEntityComputerPort te) {
-//			this.te = te;
-//		}
-//
-//		@Optional.Method(modid = "ComputerCraft")
-//		@Override
-//		public String getType() {
-//			return "big_battery";
-//		}
-//
-//		@Optional.Method(modid = "ComputerCraft")
-//		@Override
-//		public String[] getMethodNames() {
-//			return new String[] {
-//					"getEnergyBalanceLastTick",
-//					"getEnergyStored",
-//					"getMaxElectrodeTransfer",
-//					"getMaxEnergyStored",
-//					"setAllElectrodeTransfer",
-//					"setElectrodeTransfer",
-//					"setIn",
-//					"setOut"
-//			};
-//		}
-//
-//		@Optional.Method(modid = "ComputerCraft")
-//		@Override
-//		public Object[] callMethod(IComputerAccess computer, ILuaContext context, int method, Object[] arguments) throws LuaException, InterruptedException {
-//
-//			switch (method) {
-//			case 0: // getEnergyBalanceLastTick
-//				if (te.getControler() != null)
-//					return new Object[] { te.getControler().getLastTickBalance() };
-//				return new Object[] { null, "Controller block not found. Rebuild your battery." };
-//			case 1: // getEnergyStored
-//				if (te.getControler() != null)
-//					return new Object[] { te.getControler().getStorage().getRealEnergyStored() };
-//				return new Object[] { null, "Controller block not found. Rebuild your battery." };
-//			case 2: // getMaxElectrodeTransfer
-//				if (te.getControler() != null)
-//					return new Object[] { te.getControler().getStorage().getMaxExtract() };
-//				return new Object[] { null, "Controller block not found. Rebuild your battery." };
-//			case 3: // getMaxEnergyStored
-//				if (te.getControler() != null)
-//					return new Object[] { te.getControler().getStorage().getRealMaxEnergyStored() };
-//				return new Object[] { null, "Controler block not found. Rebuild your battery." };
-//			case 4: // setAllElectrodeTransfer
-//				if (!(arguments != null && arguments.length > 0 && arguments[0] instanceof Double)) {
-//					return new Object[] { null, "Wrong argument" };
-//				}
-//				int transfer = ((Double) arguments[0]).intValue();
-//				if (te.getControler() != null) {
-//					for (TileEntityPowerTap tap : te.getControler().getPowerTaps())
-//						tap.setTransfer(transfer);
-//					return null;
-//				}
-//				return new Object[] { null, "Controller block not found. Rebuild your battery." };
-//			case 5: // setElectrodeTransfer
-//				if (!(arguments != null && arguments.length > 1 && arguments[1] instanceof Double && (arguments[0] instanceof Double || arguments[0] instanceof String))) {
-//					return new Object[] { null, "Wrong arguments" };
-//				}
-//
-//				String label = null;
-//				int id = -1;
-//				if (arguments[0] instanceof String) {
-//					label = (String) arguments[0];
-//				} else {
-//					id = ((Double) arguments[0]).intValue();
-//				}
-//
-//				TileEntityPowerTap powerTap = label != null ? te.findPowerTap(label) : te.findPowerTap(id);
-//				if (powerTap != null) {
-//					powerTap.setTransfer(((Double) arguments[1]).intValue());
-//					return null;
-//				} else {
-//					return new Object[] { null, "Electrode or Controller not found." };
-//				}
-//			case 6: // setIn
-//				if (!(arguments != null && arguments.length > 1 && arguments[1] instanceof Double && (arguments[0] instanceof Double || arguments[0] instanceof String))) {
-//					return new Object[] { null, "Wrong arguments" };
-//				}
-//				String name = null;
-//				int eid = -1;
-//				if (arguments[0] instanceof String) {
-//					name = (String) arguments[0];
-//				} else {
-//					eid = ((Double) arguments[0]).intValue();
-//				}
-//
-//				TileEntityPowerTap powerTapIN = name != null ? te.findPowerTap(name) : te.findPowerTap(eid);
-//				if (powerTapIN != null) {
-//					powerTapIN.setIn();
-//					return null;
-//				} else {
-//					return new Object[] { null, "Electrode or Controller not found." };
-//				}
-//			case 7: // setOut
-//				if (!(arguments != null && arguments.length > 1 && arguments[1] instanceof Double && (arguments[0] instanceof Double || arguments[0] instanceof String))) {
-//					return new Object[] { null, "Wrong arguments" };
-//				}
-//				String nameOut = null;
-//				int oid = -1;
-//				if (arguments[0] instanceof String) {
-//					nameOut = (String) arguments[0];
-//				} else {
-//					oid = ((Double) arguments[0]).intValue();
-//				}
-//
-//				TileEntityPowerTap powerTapOUT = nameOut != null ? te.findPowerTap(nameOut) : te.findPowerTap(oid);
-//				if (powerTapOUT != null) {
-//					powerTapOUT.setOut();
-//					return null;
-//				} else {
-//					return new Object[] { null, "Electrode or Controller not found." };
-//				}
-//			}
-//			return null;
-//		}
-//
-//		@Optional.Method(modid = "ComputerCraft")
-//		@Override
-//		public void attach(IComputerAccess computer) {
-//
-//		}
-//
-//		@Optional.Method(modid = "ComputerCraft")
-//		@Override
-//		public void detach(IComputerAccess computer) {
-//
-//		}
-//
-//		@Optional.Method(modid = "ComputerCraft")
-//		@Override
-//		public boolean equals(IPeripheral other) {
-//			if (other == null) {
-//				return false;
-//			}
-//			if (this == other) {
-//				return true;
-//			}
-//			if (other instanceof TileEntity) {
-//				TileEntity tother = (TileEntity) other;
-//				return tother.getWorldObj().equals(te.worldObj)
-//						&& tother.xCoord == te.xCoord && tother.yCoord == te.yCoord && tother.zCoord == te.zCoord;
-//			}
-//
-//			return false;
-//		}
-//	}
+		TileEntityComputerPort te;
+
+		public BatteryPeripheral(TileEntityComputerPort te) {
+			this.te = te;
+		}
+
+		@Optional.Method(modid = "computercraft")
+		@Override
+		public String getType() {
+			return "big_battery";
+		}
+
+		@Optional.Method(modid = "computercraft")
+		@Override
+		public String[] getMethodNames() {
+			return new String[] {
+					"getEnergyBalanceLastTick",
+					"getEnergyStored",
+					"getMaxElectrodeTransfer",
+					"getMaxEnergyStored",
+					"setAllElectrodeTransfer",
+					"setElectrodeTransfer",
+					"setIn",
+					"setOut"
+			};
+		}
+
+        @Optional.Method(modid = "computercraft")
+        @Override
+        public Object[] callMethod(@Nonnull IComputerAccess iComputerAccess, @Nonnull ILuaContext iLuaContext, int method, @Nonnull Object[] arguments) throws LuaException, InterruptedException {
+
+			switch (method) {
+			case 0: // getEnergyBalanceLastTick
+				if (te.getControler() != null)
+					return new Object[] { te.getControler().getLastTickBalance() };
+				return new Object[] { null, "Controller block not found. Rebuild your battery." };
+			case 1: // getEnergyStored
+				if (te.getControler() != null)
+					return new Object[] { te.getControler().getStorage().getRealEnergyStored() };
+				return new Object[] { null, "Controller block not found. Rebuild your battery." };
+			case 2: // getMaxElectrodeTransfer
+				if (te.getControler() != null)
+					return new Object[] { te.getControler().getStorage().getMaxExtract() };
+				return new Object[] { null, "Controller block not found. Rebuild your battery." };
+			case 3: // getMaxEnergyStored
+				if (te.getControler() != null)
+					return new Object[] { te.getControler().getStorage().getRealMaxEnergyStored() };
+				return new Object[] { null, "Controler block not found. Rebuild your battery." };
+			case 4: // setAllElectrodeTransfer
+				if (!(arguments != null && arguments.length > 0 && arguments[0] instanceof Double)) {
+					return new Object[] { null, "Wrong argument" };
+				}
+				int transfer = ((Double) arguments[0]).intValue();
+				if (te.getControler() != null) {
+					for (TileEntityPowerTap tap : te.getControler().getPowerTaps())
+						tap.setTransfer(transfer);
+					return null;
+				}
+				return new Object[] { null, "Controller block not found. Rebuild your battery." };
+			case 5: // setElectrodeTransfer
+				if (!(arguments != null && arguments.length > 1 && arguments[1] instanceof Double && (arguments[0] instanceof Double || arguments[0] instanceof String))) {
+					return new Object[] { null, "Wrong arguments" };
+				}
+
+				String label = null;
+				int id = -1;
+				if (arguments[0] instanceof String) {
+					label = (String) arguments[0];
+				} else {
+					id = ((Double) arguments[0]).intValue();
+				}
+
+				TileEntityPowerTap powerTap = label != null ? te.findPowerTap(label) : te.findPowerTap(id);
+				if (powerTap != null) {
+					powerTap.setTransfer(((Double) arguments[1]).intValue());
+					return null;
+				} else {
+					return new Object[] { null, "Electrode or Controller not found." };
+				}
+			case 6: // setIn
+				if (!(arguments != null && arguments.length > 0 && (arguments[0] instanceof Double || arguments[0] instanceof String))) {
+					return new Object[] { null, "Wrong arguments" };
+				}
+				String name = null;
+				int eid = -1;
+				if (arguments[0] instanceof String) {
+					name = (String) arguments[0];
+				} else {
+					eid = ((Double) arguments[0]).intValue();
+				}
+
+				TileEntityPowerTap powerTapIN = name != null ? te.findPowerTap(name) : te.findPowerTap(eid);
+				if (powerTapIN != null) {
+					powerTapIN.setIn();
+					return null;
+				} else {
+					return new Object[] { null, "Electrode or Controller not found." };
+				}
+			case 7: // setOut
+				if (!(arguments != null && arguments.length > 0 && (arguments[0] instanceof Double || arguments[0] instanceof String))) {
+					return new Object[] { null, "Wrong arguments" };
+				}
+				String nameOut = null;
+				int oid = -1;
+				if (arguments[0] instanceof String) {
+					nameOut = (String) arguments[0];
+				} else {
+					oid = ((Double) arguments[0]).intValue();
+				}
+
+				TileEntityPowerTap powerTapOUT = nameOut != null ? te.findPowerTap(nameOut) : te.findPowerTap(oid);
+				if (powerTapOUT != null) {
+					powerTapOUT.setOut();
+					return null;
+				} else {
+					return new Object[] { null, "Electrode or Controller not found." };
+				}
+			}
+			return null;
+		}
+
+		@Optional.Method(modid = "computercraft")
+		@Override
+		public boolean equals(IPeripheral other) {
+			if (other == null) {
+				return false;
+			}
+			if (this == other) {
+				return true;
+			}
+			if (other instanceof TileEntity) {
+				TileEntity tother = (TileEntity) other;
+                return tother.getPos().equals(te.getPos()) &&
+                tother.getWorld().equals(te.world);
+			}
+			return false;
+		}
+	}
 
 }
