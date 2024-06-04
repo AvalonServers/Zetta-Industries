@@ -102,28 +102,28 @@ public class Battery implements IMod, IGUI, IProxy {
 
         blockBigBatteryWall = (new BlockBigBatteryWall());
         itemBlockBigBatteryWall = (new InformationalItemBlock(blockBigBatteryWall).setRegistryName(blockBigBatteryWall.getRegistryName()));
-        GameRegistry.registerTileEntity(TileEntityWall.class, "BatteryTileEntityWall");
+        GameRegistry.registerTileEntity(TileEntityWall.class, new ResourceLocation(ZettaIndustries.MODID,"BatteryTileEntityWall"));
 
 
         blockBigBatteryPowerTap = (new BlockBigBatteryPowerTap());
         itemBlockBigBatteryPowerTap = (new InformationalItemBlock(blockBigBatteryPowerTap).setRegistryName(blockBigBatteryPowerTap.getRegistryName()));
-        GameRegistry.registerTileEntity(TileEntityPowerTap.class, "BatteryTileEntityPowerTap");
+        GameRegistry.registerTileEntity(TileEntityPowerTap.class, new ResourceLocation(ZettaIndustries.MODID,"BatteryTileEntityPowerTap"));
 
         blockBigBatteryGlass = (new BlockBigBatteryGlass());
         itemBlockBigBatteryGlass = (new InformationalItemBlock(blockBigBatteryGlass).setRegistryName(blockBigBatteryGlass.getRegistryName()));
-        GameRegistry.registerTileEntity(TileEntityGlass.class, "BatteryTileEntityGlass");
+        GameRegistry.registerTileEntity(TileEntityGlass.class, new ResourceLocation(ZettaIndustries.MODID,"BatteryTileEntityGlass"));
 
         blockBigBatteryElectrode = (new BlockBigBatteryElectrode());
         itemBlockBigBatteryElectrode = (new InformationalItemBlock(blockBigBatteryElectrode).setRegistryName(blockBigBatteryElectrode.getRegistryName()));
-        GameRegistry.registerTileEntity(TileEntityElectrode.class, "BatteryTileEntityElectrode");
+        GameRegistry.registerTileEntity(TileEntityElectrode.class, new ResourceLocation(ZettaIndustries.MODID,"BatteryTileEntityElectrode"));
 
         blockBigBatteryControler = (new BlockBigBatteryController());
         itemBlockBigBatteryControler = (new InformationalItemBlock(blockBigBatteryControler).setRegistryName(blockBigBatteryControler.getRegistryName()));
-        GameRegistry.registerTileEntity(TileEntityControler.class, "BatteryTileEntityControler");
+        GameRegistry.registerTileEntity(TileEntityControler.class, new ResourceLocation(ZettaIndustries.MODID,"BatteryTileEntityControler"));
 
         blockBigBatteryComputerPort = (new BlockBigBatteryComputerPort());
         itemBlockBigBatteryComputerPort = (new InformationalItemBlock(blockBigBatteryComputerPort).setRegistryName(blockBigBatteryComputerPort.getRegistryName()));
-        GameRegistry.registerTileEntity(TileEntityComputerPort.class, "BatteryTileEntityComputerPort");
+        GameRegistry.registerTileEntity(TileEntityComputerPort.class, new ResourceLocation(ZettaIndustries.MODID,"BatteryTileEntityComputerPort"));
 
         blockGraphite = (new BlockGraphite());
         itemBlockGraphite = (new InformationalItemBlock(blockGraphite).setRegistryName(blockGraphite.getRegistryName()));

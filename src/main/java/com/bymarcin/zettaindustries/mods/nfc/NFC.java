@@ -71,8 +71,8 @@ public class NFC implements IMod, IProxy {
         itemBlockNFCReader = new ItemBlock(blockNFCReader).setRegistryName(blockNFCReader.getRegistryName());
         itemBlockNFCProgrammer = new ItemBlock(blockNFCProgrammer).setRegistryName(blockNFCProgrammer.getRegistryName());
 
-        GameRegistry.registerTileEntity(TileEntityNFCReader.class, "nfcReader");
-        GameRegistry.registerTileEntity(TileEntityNFCProgrammer.class, "nfcprogrammer");
+        GameRegistry.registerTileEntity(TileEntityNFCReader.class, new ResourceLocation(ZettaIndustries.MODID,"nfcReader"));
+        GameRegistry.registerTileEntity(TileEntityNFCProgrammer.class, new ResourceLocation(ZettaIndustries.MODID,"nfcprogrammer"));
 
         smartCardItem = new SmartCardItem();
         smartCardTerminalItem = new SmartCardTerminalItem();

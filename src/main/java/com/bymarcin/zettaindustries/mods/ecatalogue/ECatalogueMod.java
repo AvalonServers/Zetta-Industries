@@ -6,6 +6,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -32,8 +33,8 @@ public class ECatalogueMod implements IMod {
 		ecatalogueBlock = new ECatalogueBlock();
 		mailmanItem = new MailmanItem();
 
-		ecatalogueItem = (new ItemBlock(ecatalogueBlock).setRegistryName(ecatalogueBlock.getRegistryName()).setUnlocalizedName(ecatalogueBlock.getRegistryName().toString()));
-		GameRegistry.registerTileEntity(ECatalogueTileEntity.class, "ecataloguetileentity");
+		ecatalogueItem = (new ItemBlock(ecatalogueBlock).setRegistryName(ecatalogueBlock.getRegistryName()).setTranslationKey(ecatalogueBlock.getRegistryName().toString()));
+		GameRegistry.registerTileEntity(ECatalogueTileEntity.class, new ResourceLocation(ZettaIndustries.MODID,"ecataloguetileentity"));
 	}
 
 	@SubscribeEvent

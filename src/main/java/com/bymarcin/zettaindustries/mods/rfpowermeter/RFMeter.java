@@ -44,8 +44,8 @@ public class RFMeter implements IMod, IProxy{
 		isOCAllowed = ZettaIndustries.instance.config.get("rfmeter", "computer.methods.allowed", true).getBoolean(true) && (Loader.isModLoaded("opencomputers") || Loader.isModLoaded("computercraft"));
 		meter = new RFMeterBlock();
 		itemMeter = new RFMeterItem(meter).setRegistryName(meter.getRegistryName());
-		GameRegistry.registerTileEntity(RFMeterTileEntity.class, "terfmeterblock");
-		GameRegistry.registerTileEntity(RFMeterTileEntityOC.class, "terfmeterblockoc");
+		GameRegistry.registerTileEntity(RFMeterTileEntity.class, new ResourceLocation(ZettaIndustries.MODID,"terfmeterblock"));
+		GameRegistry.registerTileEntity(RFMeterTileEntityOC.class, new ResourceLocation(ZettaIndustries.MODID,"terfmeterblockoc"));
 		ZIRegistry.registerProxy(this);
 		ZIRegistry.registerPacket(4, RFMeterUpdatePacket.class, Side.CLIENT);
 	}

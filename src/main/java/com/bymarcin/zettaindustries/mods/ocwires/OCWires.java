@@ -52,7 +52,7 @@ public class OCWires implements IMod, IProxy, INeedLoadCompleteEvent{
 		connector.setRegistryName(new ResourceLocation("zettaindustries:telecommunicationconnector"));
 		connectorItem.setRegistryName(new ResourceLocation("zettaindustries:telecommunicationconnector"));
 
-		GameRegistry.registerTileEntity(TileEntityTelecomunicationConnector.class, "TileEntityTelecomunicationConnector");
+		GameRegistry.registerTileEntity(TileEntityTelecomunicationConnector.class, new ResourceLocation(ZettaIndustries.MODID,"TileEntityTelecomunicationConnector"));
 		ZIRegistry.registerProxy(this);
 		cableLength = ZettaIndustries.instance.config.get("OCWires", "cableLength", 32, "The maximum length cables can have.",8,64).getInt(32);	
 	}
