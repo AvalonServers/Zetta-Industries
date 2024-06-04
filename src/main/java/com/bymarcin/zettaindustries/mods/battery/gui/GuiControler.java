@@ -60,4 +60,11 @@ public class GuiControler extends GuiContainer{
 		fontRenderer.drawString("Max Energy: " + MathUtils.addSI(battery.getStorage().getRealMaxEnergyStored() , "RF"), 0, 5, 0x000);
 		GL11.glPopMatrix();
 	}
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		this.drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
+	}
 }

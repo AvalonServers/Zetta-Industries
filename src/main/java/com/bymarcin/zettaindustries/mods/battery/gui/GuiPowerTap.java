@@ -166,7 +166,12 @@ public class GuiPowerTap extends GuiContainer{
 		super.mouseClicked(x, y, button);
 		textfield.mouseClicked(x, y, button);
 	}
-	
-	
+
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		this.drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
+	}
 	
 }
