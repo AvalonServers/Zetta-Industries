@@ -44,9 +44,9 @@ public class SmartCardBlockTerminalRenderer extends TileEntitySpecialRenderer<Sm
         GlStateManager.rotate(90, -1, 0, 0);
         GL11.glScalef(0.7f, 0.7f, 0.7f);
         int brightness = terminal.getWorld().getCombinedLight(new BlockPos(
-                terminal.getPos().getX() + facing.getFrontOffsetX(),
-                terminal.getPos().getY() + facing.getFrontOffsetY(),
-                terminal.getPos().getZ() + facing.getFrontOffsetZ()
+                terminal.getPos().getX() + facing.getXOffset(),
+                terminal.getPos().getY() + facing.getYOffset(),
+                terminal.getPos().getZ() + facing.getZOffset()
         ),0);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightness % 65536, brightness / 65536);
 

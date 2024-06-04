@@ -9,9 +9,9 @@ public class ZettaIndustriesCreativeTab extends CreativeTabs{
 	public ZettaIndustriesCreativeTab() {
 		super(ZettaIndustries.MODID);
 	}
-	
+
 	@Override
-	public ItemStack getTabIconItem() {
+	public ItemStack createIcon() {
 		return new ItemStack(ZettaIndustries.itemLogo);
 	}
 }

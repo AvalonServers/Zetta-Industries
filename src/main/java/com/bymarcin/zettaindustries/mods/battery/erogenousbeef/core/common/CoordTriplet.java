@@ -33,11 +33,11 @@ public class CoordTriplet implements Comparable {
 		}
 	}
 	
-	public void translate(EnumFacing dir) {
-		this.x += dir.getFrontOffsetX();
-		this.y += dir.getFrontOffsetY();
-		this.z += dir.getFrontOffsetZ();
-	}
+//	public void translate(EnumFacing dir) {
+//		this.x += dir.getFrontOffsetX();
+//		this.y += dir.getFrontOffsetY();
+//		this.z += dir.getFrontOffsetZ();
+//	}
 	
 	public boolean equals(int x, int y, int z) {
 		return this.x == x && this.y == y && this.z == z;

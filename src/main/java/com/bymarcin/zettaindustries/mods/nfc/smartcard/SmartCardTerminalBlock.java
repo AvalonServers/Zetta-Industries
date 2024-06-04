@@ -33,7 +33,7 @@ public class SmartCardTerminalBlock extends BlockContainer{
 		setCreativeTab(ZettaIndustries.instance.tabZettaIndustries);
 		setHardness(3f);
 		setRegistryName("smartcardterminalblock");
-		setUnlocalizedName(ZettaIndustries.MODID.concat(".").concat("smartcardterminalblock"));
+		setTranslationKey(ZettaIndustries.MODID.concat(".").concat("smartcardterminalblock"));
 		setDefaultState(getDefaultState().withProperty(FACING,2));
 	}
 
@@ -59,12 +59,12 @@ public class SmartCardTerminalBlock extends BlockContainer{
 	}
 
 	@Override
-	public void onBlockDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosionIn) {
+	public void onExplosionDestroy(World worldIn, BlockPos pos, Explosion explosionIn) {
 		onBlockDestroy(worldIn, pos);
 	}
 
 	@Override
-	public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
+	public void onPlayerDestroy(World worldIn, BlockPos pos, IBlockState state) {
 		onBlockDestroy(worldIn, pos);
 	}
 

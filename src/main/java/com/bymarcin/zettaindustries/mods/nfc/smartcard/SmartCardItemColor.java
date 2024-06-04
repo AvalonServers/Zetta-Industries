@@ -5,8 +5,9 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
 
 public class SmartCardItemColor implements IItemColor {
+
 	@Override
-	public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+	public int colorMultiplier(ItemStack stack, int tintIndex) {
 		if (tintIndex == 0) {
 			return NFC.smartCardItem.hasColor(stack) ? NFC.smartCardItem.getColor(stack) : 0xFF316ac8;
 		} else {

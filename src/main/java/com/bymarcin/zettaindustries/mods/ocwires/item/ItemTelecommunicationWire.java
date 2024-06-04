@@ -120,8 +120,8 @@ public class ItemTelecommunicationWire extends BasicItem implements IWireCoil {
 							if (connectionExists) {
 								player.sendMessage(new TextComponentTranslation(Lib.CHAT_WARN + "connectionExists"));
 							} else {
-								Vec3d rtOff0 = nodeHere.getRaytraceOffset(nodeLink).addVector(masterPos.getX(), masterPos.getY(), masterPos.getZ());
-								Vec3d rtOff1 = nodeLink.getRaytraceOffset(nodeHere).addVector(linkPos.getX(), linkPos.getY(), linkPos.getZ());
+								Vec3d rtOff0 = nodeHere.getRaytraceOffset(nodeLink).add(masterPos.getX(), masterPos.getY(), masterPos.getZ());
+								Vec3d rtOff1 = nodeLink.getRaytraceOffset(nodeHere).add(linkPos.getX(), linkPos.getY(), linkPos.getZ());
 								Set<BlockPos> ignore = new HashSet<>();
 								ignore.addAll(nodeHere.getIgnored(nodeLink));
 								ignore.addAll(nodeLink.getIgnored(nodeHere));

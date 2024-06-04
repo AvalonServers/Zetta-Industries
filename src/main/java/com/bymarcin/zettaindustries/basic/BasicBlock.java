@@ -15,7 +15,7 @@ public class BasicBlock extends Block implements IBlockInfo {
 		super(material);
 		setCreativeTab(ZettaIndustries.tabZettaIndustries);
 		setRegistryName(name);
-		setUnlocalizedName(ZettaIndustries.MODID + "." + name);
+        setTranslationKey(ZettaIndustries.MODID + "." + name);
 		setHardness(3.0F);
 		
 	}

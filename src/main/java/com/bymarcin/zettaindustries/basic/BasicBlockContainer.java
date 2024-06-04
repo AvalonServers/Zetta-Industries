@@ -14,7 +14,7 @@ public abstract class BasicBlockContainer extends BlockContainer{
 		setRegistryName(name);
 		setHardness(3.0F);
 		setResistance(15.0F);
-		setUnlocalizedName(ZettaIndustries.MODID.concat(".").concat(name));
+		setTranslationKey(ZettaIndustries.MODID.concat(".").concat(name));
 	}
 
 }

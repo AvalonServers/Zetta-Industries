@@ -156,8 +156,9 @@ public class SmartCardDyeRecipe extends IForgeRegistryEntry.Impl<IRecipe> implem
 		return ItemStack.EMPTY;
 	}
 
-	@Override
-	public boolean isHidden() {
-		return true;
-	}
+
+//	@Override
+//	public boolean isHidden() {
+//		return true;
+//	}
 }

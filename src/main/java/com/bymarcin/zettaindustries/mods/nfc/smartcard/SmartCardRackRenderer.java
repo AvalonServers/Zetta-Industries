@@ -57,9 +57,9 @@ public class SmartCardRackRenderer {
 				GlStateManager.scale(0.7f, 0.7f, 0.7f);
 				GlStateManager.rotate(90, -1, 0, 0);
 				int brightness = e.rack.world().getCombinedLight(new BlockPos(
-						(int) e.rack.xPosition() + e.rack.facing().getFrontOffsetX(),
-						(int) e.rack.yPosition() + e.rack.facing().getFrontOffsetY(),
-						(int) e.rack.zPosition() + e.rack.facing().getFrontOffsetZ()), 0);
+						(int) e.rack.xPosition() + e.rack.facing().getXOffset(),
+						(int) e.rack.yPosition() + e.rack.facing().getYOffset(),
+						(int) e.rack.zPosition() + e.rack.facing().getZOffset()), 0);
 				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, brightness % 65536, brightness / 65536);
 				// This is very 'meh', but item frames do it like this, too!
 				EntityItem entity = new EntityItem(e.rack.world(), 0, 0, 0, new ItemStack(NFC.smartCardItem));

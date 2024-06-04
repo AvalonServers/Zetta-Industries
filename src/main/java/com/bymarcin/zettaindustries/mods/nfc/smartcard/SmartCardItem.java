@@ -42,7 +42,7 @@ public class SmartCardItem extends Item implements DriverItem, IDyeableItem {
             e.printStackTrace();
         }
         setCreativeTab(ZettaIndustries.tabZettaIndustries);
-        setUnlocalizedName(ZettaIndustries.MODID.concat(".").concat("smartcard"));
+        setTranslationKey(ZettaIndustries.MODID.concat(".").concat("smartcard"));
         setRegistryName("smartcard");
         setMaxStackSize(1);
         setNoRepair();

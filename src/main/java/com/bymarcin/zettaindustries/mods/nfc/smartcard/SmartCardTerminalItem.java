@@ -17,7 +17,7 @@ public class SmartCardTerminalItem extends Item implements HostAware, DriverItem
 
     public SmartCardTerminalItem() {
         setCreativeTab(ZettaIndustries.instance.tabZettaIndustries);
-        setUnlocalizedName(ZettaIndustries.MODID.concat(".").concat("smartcardterminal"));
+        setTranslationKey(ZettaIndustries.MODID.concat(".").concat("smartcardterminal"));
         setRegistryName("smartcardterminal");
         setMaxStackSize(1);
     }

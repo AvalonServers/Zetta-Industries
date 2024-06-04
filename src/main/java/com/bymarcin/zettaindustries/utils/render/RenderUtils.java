@@ -50,7 +50,7 @@ public class RenderUtils {
 
 	public static BakedQuad recolorQuad(BakedQuad quad, int color) {
 		int c = DefaultVertexFormats.BLOCK.getColorOffset() / 4;
-		int v = DefaultVertexFormats.BLOCK.getNextOffset() / 4;
+		int v = DefaultVertexFormats.BLOCK.getIntegerSize();
 		int[] vertexData = quad.getVertexData();
 		for (int i = 0; i < 4; i++) {
 			vertexData[v * i + c] = multiplyColor(vertexData[v * i + c], color);
@@ -66,7 +66,7 @@ public class RenderUtils {
 		for (BakedQuad quad : src) {
 			BakedQuad quad1 = clone(quad);
 			int c = DefaultVertexFormats.BLOCK.getColorOffset() / 4;
-			int v = DefaultVertexFormats.BLOCK.getNextOffset() / 4;
+			int v = DefaultVertexFormats.BLOCK.getIntegerSize();
 			int[] vertexData = quad1.getVertexData();
 			for (int i = 0; i < 4; i++) {
 				vertexData[v * i + c] = multiplyColor(vertexData[v * i + c], color);

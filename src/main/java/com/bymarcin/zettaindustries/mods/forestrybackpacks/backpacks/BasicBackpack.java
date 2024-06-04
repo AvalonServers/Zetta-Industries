@@ -58,10 +58,10 @@ public abstract class BasicBackpack implements IBackpackDefinition{
 		if(!itemstack.isEmpty()){
 			ResourceLocation rl = itemstack.getItem().getRegistryName();
 			String name = null;
-			System.out.println(rl.getResourceDomain());
-			System.out.println(rl.getResourcePath());
+			System.out.println(rl.getNamespace());
+			System.out.println(rl.getPath());
 			if(rl!=null){
-				name = rl.getResourcePath();
+				name = rl.getPath();
 			}
 			if(name==null || name.isEmpty()) return false;
 			for(String names : getNames()){

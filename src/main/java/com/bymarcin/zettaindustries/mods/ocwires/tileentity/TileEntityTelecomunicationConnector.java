@@ -142,7 +142,7 @@ public class TileEntityTelecomunicationConnector extends TileEntityImmersiveConn
 	@Override
 	public Vec3d getRaytraceOffset(IImmersiveConnectable arg0) {
 		EnumFacing fd = getFacing().getOpposite();
-		return new Vec3d(.5+fd.getFrontOffsetX()*.0625, .5+fd.getFrontOffsetY()*.0625, .5+fd.getFrontOffsetZ()*.0625);
+		return new Vec3d(.5+fd.getXOffset()*.0625, .5+fd.getYOffset()*.0625, .5+fd.getZOffset()*.0625);
 	}
 	
 	@Override
@@ -150,7 +150,7 @@ public class TileEntityTelecomunicationConnector extends TileEntityImmersiveConn
 	{
 		EnumFacing fd = getFacing().getOpposite();
 		double conRadius = .03125;
-		return new Vec3d(.5-conRadius*fd.getFrontOffsetX(), .5-conRadius*fd.getFrontOffsetY(), .5-conRadius*fd.getFrontOffsetZ());
+		return new Vec3d(.5-conRadius*fd.getXOffset(), .5-conRadius*fd.getYOffset(), .5-conRadius*fd.getZOffset());
 	}
 
 	@Override
@@ -237,7 +237,7 @@ public class TileEntityTelecomunicationConnector extends TileEntityImmersiveConn
 	@Override
 	public void readCustomNBT(NBTTagCompound nbt, boolean descPacket) {
 		super.readCustomNBT(nbt, descPacket);
-		f = EnumFacing.getFront(nbt.getInteger("facing"));
+		f = EnumFacing.byIndex(nbt.getInteger("facing"));
 	}
 
 	@Override
@@ -250,7 +250,7 @@ public class TileEntityTelecomunicationConnector extends TileEntityImmersiveConn
     @Override
     public void readFromNBT(final NBTTagCompound nbt) {
         super.readFromNBT(nbt);
-		f = EnumFacing.getFront(nbt.getInteger("facing"));
+		f = EnumFacing.byIndex(nbt.getInteger("facing"));
         // The host check may be superfluous for you. It's just there to allow
         // some special cases, where getNode() returns some node managed by
         // some other instance (for example when you have multiple internal

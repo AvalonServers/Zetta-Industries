@@ -19,7 +19,7 @@ public class ItemPrivateCardNFC extends ItemCardNFC{
 
 	public ItemPrivateCardNFC() {
 		super("itemprivatecardnfc");
-		setUnlocalizedName(ZettaIndustries.MODID.concat(".").concat("itemprivatecardnfc"));
+		setTranslationKey(ZettaIndustries.MODID.concat(".").concat("itemprivatecardnfc"));
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })

@@ -22,7 +22,7 @@ public class AcidFluid extends BlockFluidClassic {
         super(fluid, Material.WATER);
         this.setCreativeTab(ZettaIndustries.instance.tabZettaIndustries);
         this.setRegistryName("sulfurousacid");
-        this.setUnlocalizedName("sulfurousacid");
+        this.setTranslationKey("sulfurousacid");
         setHardness(101f);
         setLightOpacity(3);
     }
@@ -51,7 +51,7 @@ public class AcidFluid extends BlockFluidClassic {
     }
 
     @Override
-    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
         entityIn.attackEntityFrom(DamageSource.DROWN, 1);
     }
 }
