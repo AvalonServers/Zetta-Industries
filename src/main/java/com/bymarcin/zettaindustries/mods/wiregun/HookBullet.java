@@ -28,7 +28,8 @@ public class HookBullet implements BulletHandler.IBullet {
 
             if (!toUse.isEmpty() && toUse.getItem() instanceof IWireCoil) {
                 if (target.typeOfHit == RayTraceResult.Type.BLOCK) {
-                    if (toUse.getItem().onItemUse(ep, world, target.getBlockPos(), EnumHand.OFF_HAND, target.sideHit, (float) target.hitVec.x % 1, (float) target.hitVec.y % 1, (float) target.hitVec.z % 1) == EnumActionResult.SUCCESS) {
+                    if (toUse.getItem().onItemUseFirst(ep, world, target.getBlockPos(),
+                            target.sideHit, (float) target.hitVec.x % 1, (float) target.hitVec.y % 1, (float) target.hitVec.z % 1,  EnumHand.OFF_HAND) == EnumActionResult.SUCCESS) {
                         world.playSound(ep, target.getBlockPos(), SoundEvents.ENTITY_ARROW_HIT, SoundCategory.PLAYERS, .8F, 1.2F / (ZettaIndustries.RANDOM.nextFloat() * .2F + .9F));
                     }
                 }
