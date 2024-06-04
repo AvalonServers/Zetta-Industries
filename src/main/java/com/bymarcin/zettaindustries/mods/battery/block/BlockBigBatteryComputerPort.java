@@ -28,9 +28,13 @@ public class BlockBigBatteryComputerPort extends BasicBlockMultiblockBase {
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileEntityComputerPort();
     }
-    
-    
-    
+
+
+    @Override
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return state.getMaterial().isOpaque() && state.isFullCube();
+    }
+
     @Override
     public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         TileEntity te = blockAccess.getTileEntity(pos);
@@ -42,12 +46,12 @@ public class BlockBigBatteryComputerPort extends BasicBlockMultiblockBase {
         }
         return getWeakPower(blockState, blockAccess, pos, side);
     }
-    
+
     @Override
     public boolean canProvidePower(IBlockState state) {
         return true;
     }
-    
+
     @Override
     public boolean canConnectRedstone(IBlockState state, IBlockAccess world, BlockPos pos, @Nullable EnumFacing side) {
         return side != EnumFacing.UP && side!= EnumFacing.DOWN;
