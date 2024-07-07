@@ -200,7 +200,7 @@ public class TileEntityComputerPort extends BasicRectangularMultiblockTileEntity
     @Optional.Method(modid = "computercraft")
     @Override
     public IPeripheral getPeripheral(@Nonnull World world, @Nonnull BlockPos blockPos, @Nonnull EnumFacing enumFacing) {
-        System.out.println("TEST");
+        //System.out.println("TEST");
         TileEntity te = world.getTileEntity(blockPos);
         if(te instanceof TileEntityComputerPort)
             return new BatteryPeripheral((TileEntityComputerPort) te);
