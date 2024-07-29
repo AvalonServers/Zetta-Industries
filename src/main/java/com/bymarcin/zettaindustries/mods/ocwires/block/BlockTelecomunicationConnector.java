@@ -105,6 +105,11 @@ public class BlockTelecomunicationConnector extends BlockIETileProvider<Connecto
 	}
 
 	@Override
+	public boolean causesSuffocation(IBlockState state) {
+		return false;
+	}
+
+	@Override
 	public boolean isFullBlock(IBlockState state) {
 		return false;
 	}

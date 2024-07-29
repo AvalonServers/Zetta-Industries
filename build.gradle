@@ -139,6 +139,7 @@ dependencies {
 	//compile name: 'ComputerCraft', version: config.cc.version, ext: 'jar'
 	//compile name: 'redlogic', version: '59.1.11', ext: 'jar'
 
+    implementation rfg.deobf("curse.maven:tiquality-301913:2910932")
 
     if (propertyBool('use_modern_java_syntax')) {
         annotationProcessor 'com.github.bsideup.jabel:jabel-javac-plugin:1.0.0'
