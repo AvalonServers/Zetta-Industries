@@ -10,6 +10,8 @@ import blusunrize.immersiveengineering.common.blocks.IEBlockInterfaces;
 import blusunrize.immersiveengineering.common.util.Utils;
 import com.bymarcin.zettaindustries.ZettaIndustries;
 import com.bymarcin.zettaindustries.mods.ocwires.TelecommunicationWireType;
+import com.google.common.collect.Iterables;
+import joptsimple.internal.Strings;
 import li.cil.oc.api.Network;
 import li.cil.oc.api.network.*;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,8 +27,8 @@ import java.util.Set;
 
 public class TileEntityTelecomunicationConnector extends TileEntityImmersiveConnectable implements Environment, SidedEnvironment, ITickable, IEBlockInterfaces.IDirectionalTile, IEBlockInterfaces.IBlockBounds {
     protected Node node;
-    protected boolean addedToNetwork = false;
     private boolean needUpdate = false;
+	public boolean isStateLoaded = false;
 	public EnumFacing f = EnumFacing.NORTH;
 
     public TileEntityTelecomunicationConnector() {
@@ -117,14 +119,35 @@ public class TileEntityTelecomunicationConnector extends TileEntityImmersiveConn
 	}
 	
 	public void checkConnections(){
+		if (node.network() == null) {
+			ZettaIndustries.logger.error("attempted to update connections before network created!");
+			return;
+		}
+
 		Set<Connection> a = ImmersiveNetHandler.INSTANCE.getConnections(getWorld(), Utils.toCC(this));
 		if(a==null)return;
 		for(Connection s : a){
 			if(s.start.equals(Utils.toCC(this)) && PosToTileEntity(s.end)!=null){
-				Node n = PosToTileEntity(s.end).node();
-				if(!node.isNeighborOf(n)){
+				TileEntityTelecomunicationConnector te = PosToTileEntity(s.end);
+				if (!te.isStateLoaded) continue; // do not connect until nbt loads to allow addresses to be created and prevent duplication
+
+				Node n = te.node();
+				if (n == null) continue;
+
+				li.cil.oc.api.network.Network net = n.network();
+				if(net != null && !node.isNeighborOf(n)){
+					// after chunk reload, we need to remove the stale node entry from the peer's network
+					String address = node.address();
+					if (!Strings.isNullOrEmpty(address)) {
+						Node stale = net.node(address);
+						if (stale != null) stale.remove();
+					}
+
 					node.connect(n);
 					//System.out.println( Utils.toCC(this).equals(s.start)+ " +++ "+ CCToTileEntity(s.start) + "-k-" + CCToTileEntity(s.end));
+
+//					int size = Iterables.size(this.node.network().nodes());
+//					ZettaIndustries.logger.info("connections added, new total whole-net node count: {}", size);
 				}
 			}
 		}
@@ -203,34 +226,39 @@ public class TileEntityTelecomunicationConnector extends TileEntityImmersiveConn
 
     @Override
     public void update() {
-    	if(getWorld().isRemote) return;
-        if (!addedToNetwork) {
-            addedToNetwork = true;
+    	if(getWorld().isRemote || node == null) return;
+
+        if (node.network() == null) {
             Network.joinOrCreateNetwork(this);
         }
-        
-        if(needUpdate){
-        	checkConnections();
-        	needUpdate=false;
-        }
-        
+
+        if(needUpdate) {
+			checkConnections();
+			needUpdate = false;
+		}
     }
 
-    @Override
-    public void onChunkUnload() {
-        super.onChunkUnload();
-        // Make sure to remove the node from its network when its environment,
-        // meaning this tile entity, gets unloaded.
-        if (node != null) node.remove();
-    }
+//    @Override
+//    public void onChunkUnload() {
+//        super.onChunkUnload();
+//		ZettaIndustries.logger.info("unloading chunk");
+//
+//        // Make sure to remove the node from its network when its environment,
+//        // meaning this tile entity, gets unloaded.
+//        if (node != null) node.remove();
+//    }
 
-    @Override
-    public void invalidate() {
-        super.invalidate();
-        // Make sure to remove the node from its network when its environment,
-        // meaning this tile entity, gets unloaded.
-        if (node != null) node.remove();
-    }
+//    @Override
+//    public void invalidate() {
+//        super.invalidate();
+//
+//		ZettaIndustries.logger.info(this.blockType != null);
+//		ZettaIndustries.logger.info("invalidating");
+//
+//        // Make sure to remove the node from its network when its environment,
+//        // meaning this tile entity, gets unloaded.
+//        if (node != null) node.remove();
+//    }
 
     // ----------------------------------------------------------------------- //
 
@@ -251,6 +279,7 @@ public class TileEntityTelecomunicationConnector extends TileEntityImmersiveConn
     public void readFromNBT(final NBTTagCompound nbt) {
         super.readFromNBT(nbt);
 		f = EnumFacing.byIndex(nbt.getInteger("facing"));
+
         // The host check may be superfluous for you. It's just there to allow
         // some special cases, where getNode() returns some node managed by
         // some other instance (for example when you have multiple internal
@@ -262,12 +291,15 @@ public class TileEntityTelecomunicationConnector extends TileEntityImmersiveConn
             // internal energy buffer of the node.
             node.load(nbt.getCompoundTag("oc:node"));
         }
+
+		isStateLoaded = true;
     }
 
     @Override
     public NBTTagCompound writeToNBT(final NBTTagCompound nbt) {
         super.writeToNBT(nbt);
 		nbt.setInteger("facing", f.getIndex());
+
         // See readFromNBT() regarding host check.
         if (node != null && node.host() == this) {
             final NBTTagCompound nodeNbt = new NBTTagCompound();
