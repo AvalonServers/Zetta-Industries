@@ -10,7 +10,6 @@ import blusunrize.immersiveengineering.common.blocks.IEBlockInterfaces;
 import blusunrize.immersiveengineering.common.util.Utils;
 import com.bymarcin.zettaindustries.ZettaIndustries;
 import com.bymarcin.zettaindustries.mods.ocwires.TelecommunicationWireType;
-import com.google.common.collect.Iterables;
 import joptsimple.internal.Strings;
 import li.cil.oc.api.Network;
 import li.cil.oc.api.network.*;
@@ -29,6 +28,8 @@ public class TileEntityTelecomunicationConnector extends TileEntityImmersiveConn
     protected Node node;
     private boolean needUpdate = false;
 	public EnumFacing f = EnumFacing.NORTH;
+
+	private int ticks = 0;
 
     public TileEntityTelecomunicationConnector() {
     	node = Network.newNode(this, Visibility.None).create();
@@ -221,7 +222,15 @@ public class TileEntityTelecomunicationConnector extends TileEntityImmersiveConn
 
     @Override
     public void update() {
-    	if(getWorld().isRemote || node == null) return;
+    	if(world.isRemote || node == null) return;
+
+		// update at max only once per second
+		if (ticks < 20) {
+			ticks++;
+			return;
+		} else {
+			ticks = 0;
+		}
 
         if (node.network() == null) {
             Network.joinOrCreateNetwork(this);

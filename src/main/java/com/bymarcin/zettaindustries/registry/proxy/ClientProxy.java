@@ -1,6 +1,7 @@
 package com.bymarcin.zettaindustries.registry.proxy;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
@@ -44,6 +45,9 @@ public class ClientProxy extends Proxy {
 
 	@Override
 	public int getCurrentClientDimension() {
+		WorldClient world = Minecraft.getMinecraft().world;
+		if (world == null) return Integer.MAX_VALUE;
+
 		return Minecraft.getMinecraft().world.provider.getDimension();
 	}
 }
